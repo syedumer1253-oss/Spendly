@@ -1,9 +1,10 @@
 import sqlite3
 from pathlib import Path
 import os
+from werkzeug.security import generate_password_hash
 
 
-DATABASE_PATH = Path(__file__).parent / "expenses.db"
+DATABASE_PATH = Path(__file__).parent.parent / "spendly.db"
 
 
 def get_db():
@@ -75,12 +76,12 @@ def seed_db():
     cursor.execute("""
         INSERT INTO users (name, email, password_hash)
         VALUES (?, ?, ?)
-    """, ("Nitish Kumar", "nitish@example.com", "hashed_password_123"))
+    """, ("Demo User", "demo@spendly.com", generate_password_hash("demo123")))
 
     user_id = cursor.lastrowid
 
     # Insert sample categories
-    categories = ["Bills", "Food", "Health", "Transport", "Entertainment", "Other"]
+    categories = ["Bills", "Food", "Health", "Transport", "Entertainment", "Shopping", "Other"]
     for category_name in categories:
         cursor.execute("""
             INSERT INTO categories (user_id, name)
@@ -93,12 +94,14 @@ def seed_db():
 
     # Insert sample expenses
     sample_expenses = [
-        (user_id, category_ids[0], 4500.00, "2026-03-01", "Electricity bill"),
-        (user_id, category_ids[1], 850.00, "2026-03-02", "Lunch at cafe"),
-        (user_id, category_ids[2], 1200.00, "2026-03-03", "Doctor consultation"),
-        (user_id, category_ids[3], 500.00, "2026-03-04", "Auto fare"),
-        (user_id, category_ids[1], 450.00, "2026-03-05", "Dinner"),
-        (user_id, category_ids[4], 1500.00, "2026-03-06", "Movie tickets"),
+        (user_id, category_ids[0], 4500.00, "2026-10-01", "Electricity bill"),
+        (user_id, category_ids[1], 850.00, "2026-10-02", "Lunch at cafe"),
+        (user_id, category_ids[2], 1200.00, "2026-10-03", "Doctor consultation"),
+        (user_id, category_ids[3], 500.00, "2026-10-04", "Auto fare"),
+        (user_id, category_ids[1], 450.00, "2026-10-05", "Dinner"),
+        (user_id, category_ids[4], 1500.00, "2026-10-06", "Movie tickets"),
+        (user_id, category_ids[5], 2000.00, "2026-10-07", "New shoes"),
+        (user_id, category_ids[2], 500.00, "2026-10-08", "Gym membership"),
     ]
 
     for expense in sample_expenses:
@@ -115,4 +118,4 @@ if __name__ == "__main__":
     # Initialize database and seed with sample data
     init_db()
     seed_db()
-    print("✓ Database initialized at:", DATABASE_PATH)
+    print("[OK] Database initialized at:", DATABASE_PATH)
