@@ -177,7 +177,7 @@ def profile():
 
 
 # ------------------------------------------------------------------ #
-# Placeholder routes — students will implement these                  #
+# Placeholder routes - students will implement these                  #
 # ------------------------------------------------------------------ #
 
 @app.route("/expenses/add", methods=["GET", "POST"])
@@ -245,7 +245,7 @@ def edit_expense(id):
     db = get_db()
     cursor = db.cursor()
 
-    # Get the expense — verify it belongs to the current user
+    # Get the expense - verify it belongs to the current user
     cursor.execute("""
         SELECT e.*, c.name as category_name
         FROM expenses e
