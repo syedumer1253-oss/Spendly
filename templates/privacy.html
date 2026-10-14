@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}Privacy Policy — Spendly{% endblock %}
+
+{% block content %}
+
+<section class="privacy-section">
+    <div class="privacy-inner">
+        <h1 class="privacy-title">Privacy Policy</h1>
+        <p class="privacy-last-updated">Last updated: October 2026</p>
+
+        <div class="privacy-content">
+            <h2 class="privacy-heading">Introduction</h2>
+            <p>
+                Spendly ("we", "us", "our", or "Company") operates the Spendly application. This page informs you of our
+                policies regarding the collection, use, and disclosure of personal data when you use our service and the
+                choices you have associated with that data.
+            </p>
+
+            <h2 class="privacy-heading">Information We Collect</h2>
+            <p>
+                We collect information you provide directly to us, such as when you create an account, including your name,
+                email address, and password. When you use Spendly, we automatically collect information about your expense data,
+                including amounts, dates, categories, and descriptions you enter.
+            </p>
+            <p>
+                We also collect information about how you access and use the application, such as your browser type, operating system,
+                referring URLs, and pages visited. This helps us improve our service and understand user behavior patterns.
+            </p>
+
+            <h2 class="privacy-heading">How We Use Your Information</h2>
+            <p>
+                We use the information we collect to provide, maintain, and improve Spendly's functionality. Your expense data is
+                used to generate reports, analytics, and visualizations specific to your account. We use your email address to send
+                important service updates and respond to your inquiries.
+            </p>
+            <p>
+                We may use aggregated and de-identified data for research, analytics, and marketing purposes. This data cannot be
+                used to identify you personally and helps us improve our service for all users.
+            </p>
+
+            <h2 class="privacy-heading">Data Security</h2>
+            <p>
+                We take the security of your personal data seriously and implement industry-standard security measures to protect
+                your information from unauthorized access, alteration, disclosure, or destruction. However, no method of transmission
+                over the internet or electronic storage is completely secure.
+            </p>
+            <p>
+                While we strive to use commercially acceptable means to protect your personal data, we cannot guarantee absolute
+                security. You use Spendly at your own risk and assume responsibility for maintaining the confidentiality of your
+                account credentials.
+            </p>
+
+            <h2 class="privacy-heading">Third Party Services</h2>
+            <p>
+                Spendly may use third-party services to enhance functionality and user experience. These may include analytics
+                providers, hosting services, and payment processors. We only share the minimum information necessary for these
+                services to operate.
+            </p>
+            <p>
+                These third-party service providers are contractually obligated to use your information only for the purpose of
+                providing services to us. We are not responsible for their privacy practices. We encourage you to review their
+                privacy policies independently.
+            </p>
+
+            <h2 class="privacy-heading">Contact Us</h2>
+            <p>
+                If you have any questions about this privacy policy or our privacy practices, please contact us. Your privacy
+                concerns are important to us, and we're committed to addressing them promptly.
+            </p>
+        </div>
+    </div>
+</section>
+
+<style>
+    .privacy-section {
+        padding: 60px 20px;
+        background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+        min-height: calc(100vh - 300px);
+    }
+
+    .privacy-inner {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .privacy-title {
+        font-family: 'DM Serif Display', serif;
+        font-size: 48px;
+        font-weight: 400;
+        margin-bottom: 8px;
+        color: #1a1a1a;
+    }
+
+    .privacy-last-updated {
+        font-size: 14px;
+        color: #999;
+        margin-bottom: 40px;
+    }
+
+    .privacy-content {
+        background: white;
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .privacy-heading {
+        font-family: 'DM Serif Display', serif;
+        font-size: 24px;
+        font-weight: 400;
+        margin-top: 32px;
+        margin-bottom: 16px;
+        color: #1a1a1a;
+    }
+
+    .privacy-heading:first-child {
+        margin-top: 0;
+    }
+
+    .privacy-content p {
+        font-family: 'DM Sans', sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+        color: #555;
+        margin-bottom: 16px;
+    }
+
+    .privacy-content p:last-child {
+        margin-bottom: 0;
+    }
+</style>
+
+{% endblock %}
