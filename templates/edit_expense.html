@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Expense — Spendly{% endblock %}
+
+{% block content %}
+
+<section class="expense-form-section">
+    <div class="expense-form-container">
+
+        <div class="form-header">
+            <h1>Edit expense</h1>
+            <p>Update the details of your expense</p>
+        </div>
+
+        <div class="form-card">
+            {% if error %}
+            <div class="form-error">{{ error }}</div>
+            {% endif %}
+
+            <form method="POST" action="/expenses/{{ expense['id'] }}/edit">
+                <div class="form-group">
+                    <label for="category_id">Category</label>
+                    <select id="category_id" name="category_id" class="form-select" required>
+                        <option value="">— Select a category —</option>
+                        {% for category in categories %}
+                        <option value="{{ category['id'] }}"
+                            {% if form_data and form_data.category_id|string == category['id']|string %}selected
+                            {% elif not form_data and category['id'] == expense['category_id'] %}selected{% endif %}>
+                            {{ category['name'] }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="amount">Amount (₹)</label>
+                        <input type="number" id="amount" name="amount"
+                               class="form-input" placeholder="0.00" step="0.01" min="0"
+                               value="{{ form_data.amount or expense['amount'] }}"
+                               required>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" id="date" name="date"
+                               class="form-input"
+                               value="{{ form_data.date or expense['date'] }}"
+                               required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description (optional)</label>
+                    <input type="text" id="description" name="description"
+                           class="form-input" placeholder="What did you spend this on?"
+                           value="{{ form_data.description or expense['description'] or '' }}">
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Save changes</button>
+                    <a href="{{ url_for('profile') }}" class="btn-secondary">Cancel</a>
+                </div>
+            </form>
+
+            <hr class="form-divider">
+
+            <div class="danger-zone">
+                <h3>Danger Zone</h3>
+                <p>Permanently delete this expense. This cannot be undone.</p>
+                <form method="POST" action="/expenses/{{ expense['id'] }}/delete" style="display: inline;">
+                    <button type="submit" class="btn-danger" onclick="return confirm('Are you sure you want to delete this expense?')">Delete expense</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="form-help">
+            <h3>Expense Info</h3>
+            <div class="info-item">
+                <span class="info-label">Created</span>
+                <span class="info-value">{{ expense['created_at'] }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Category</span>
+                <span class="info-value">{{ expense['category_name'] }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Amount</span>
+                <span class="info-value">₹{{ "%.2f"|format(expense['amount']) }}</span>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

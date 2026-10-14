@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard — Spendly{% endblock %}
+
+{% block content %}
+
+<section class="dashboard">
+    <div class="dashboard-inner">
+        <div class="dashboard-header">
+            <h1>Welcome, {{ user['name'] }}!</h1>
+            <a href="{{ url_for('logout') }}" class="btn-secondary">Sign out</a>
+        </div>
+
+        <div class="dashboard-grid">
+            <!-- Summary Card -->
+            <div class="summary-card">
+                <h2>Expense Summary</h2>
+                <div class="summary-breakdown">
+                    {% if category_totals %}
+                        {% for row in category_totals %}
+                        <div class="summary-row">
+                            <span class="summary-category">{{ row['category_name'] or 'Uncategorized' }}</span>
+                            <span class="summary-amount">₹{{ "%.2f"|format(row['total']) }}</span>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="empty-state">No expenses yet. <a href="{{ url_for('add_expense') }}">Add your first expense</a>.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Actions Card -->
+            <div class="actions-card">
+                <h2>Quick Actions</h2>
+                <div class="action-buttons">
+                    <a href="{{ url_for('add_expense') }}" class="btn-primary">+ Add expense</a>
+                    <a href="#" class="btn-secondary">View all expenses</a>
+                    <a href="#" class="btn-secondary">Download report</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Expenses -->
+        <div class="recent-expenses">
+            <h2>Recent Expenses</h2>
+            {% if recent_expenses %}
+            <div class="expenses-table">
+                <div class="table-header">
+                    <div class="col-date">Date</div>
+                    <div class="col-category">Category</div>
+                    <div class="col-description">Description</div>
+                    <div class="col-amount">Amount</div>
+                    <div class="col-actions">Actions</div>
+                </div>
+                {% for expense in recent_expenses %}
+                <div class="table-row">
+                    <div class="col-date">{{ expense['date'] }}</div>
+                    <div class="col-category">{{ expense['category_name'] }}</div>
+                    <div class="col-description">{{ expense['description'] or '—' }}</div>
+                    <div class="col-amount">₹{{ "%.2f"|format(expense['amount']) }}</div>
+                    <div class="col-actions">
+                        <a href="{{ url_for('edit_expense', id=expense['id']) }}" class="action-edit">Edit</a>
+                        <form method="POST" action="{{ url_for('delete_expense', id=expense['id']) }}" style="display: inline;">
+                            <button type="submit" class="action-delete" onclick="return confirm('Delete this expense?')">Delete</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="empty-state">No expenses recorded yet.</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}
