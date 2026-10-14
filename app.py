@@ -236,7 +236,7 @@ def add_expense():
             "description": description
         })
 
-    return render_template("add_expense.html", categories=categories)
+    return render_template("add_expense.html", categories=categories, form_data={})
 
 
 @app.route("/expenses/<int:id>/edit", methods=["GET", "POST"])
@@ -309,7 +309,7 @@ def edit_expense(id):
             "description": description
         })
 
-    return render_template("edit_expense.html", expense=expense, categories=categories)
+    return render_template("edit_expense.html", expense=expense, categories=categories, form_data={})
 
 
 @app.route("/expenses/<int:id>/delete", methods=["POST"])
