@@ -17,7 +17,7 @@
         </p>
         <div class="hero-actions">
             <a href="{{ url_for('register') }}" class="btn-primary">Create free account</a>
-            <a href="{{ url_for('login') }}" class="btn-primary">See how it works</a>
+            <button id="seeHowItWorksBtn" class="btn-primary">See how it works</button>
         </div>
     </div>
     <div class="hero-visual">
@@ -96,4 +96,56 @@
     </div>
 </section>
 
+<!-- Video Modal -->
+<div id="videoModal" class="modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+        <button id="closeModalBtn" class="modal-close">&times;</button>
+        <div class="modal-body">
+            <iframe id="videoFrame" width="100%" height="500" src="https://www.youtube.com/embed/-Lt-ntUDj-g" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const modal = document.getElementById('videoModal');
+    const seeHowItWorksBtn = document.getElementById('seeHowItWorksBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const modalOverlay = document.querySelector('.modal-overlay');
+    const videoFrame = document.getElementById('videoFrame');
+
+    // Open modal when button is clicked
+    seeHowItWorksBtn.addEventListener('click', function() {
+        modal.classList.add('active');
+        seeHowItWorksBtn.blur(); // Remove focus styling
+    });
+
+    // Close modal when close button is clicked
+    closeModalBtn.addEventListener('click', function() {
+        closeModal();
+    });
+
+    // Close modal when overlay is clicked
+    modalOverlay.addEventListener('click', function() {
+        closeModal();
+    });
+
+    // Close modal when Escape key is pressed
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    function closeModal() {
+        modal.classList.remove('active');
+        // Stop video by replacing src with empty value and then restoring it
+        const currentSrc = videoFrame.src;
+        videoFrame.src = '';
+        videoFrame.src = currentSrc;
+    }
+</script>
 {% endblock %}
