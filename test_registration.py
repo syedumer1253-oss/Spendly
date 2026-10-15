@@ -55,7 +55,8 @@ def test_1_happy_path():
     data = {
         "name": "Test User One",
         "email": "testuser1@example.com",
-        "password": "password123"
+        "password": "password123",
+        "confirm_password": "password123"
     }
     resp = session.post(f"{BASE_URL}/register", data=data, allow_redirects=False)
 
@@ -75,7 +76,7 @@ def test_1_happy_path():
     # Check password is hashed
     pwd_hash = get_user_password_hash("testuser1@example.com")
     assert pwd_hash != "password123", "Password not hashed (stored plaintext!)"
-    assert pwd_hash.startswith("pbkdf2:sha256$"), f"Password hash format wrong: {pwd_hash[:20]}"
+    assert pwd_hash.startswith(("pbkdf2:sha256$", "scrypt:")), f"Password hash format wrong: {pwd_hash[:20]}"
     print("[OK] Password properly hashed")
 
     print("\n[PASS] TEST 1 PASSED\n")
@@ -91,7 +92,7 @@ def test_2_validation_failures():
     # Test 2a: Empty fields
     print("\nTest 2a: Empty fields")
     resp = session.post(f"{BASE_URL}/register", data={
-        "name": "", "email": "", "password": ""
+        "name": "", "email": "", "password": "", "confirm_password": ""
     })
     assert resp.status_code == 200, "Should re-render form"
     assert "Name is required" in resp.text, "Missing name validation"
@@ -99,21 +100,28 @@ def test_2_validation_failures():
 
     # Test 2b: Missing email
     resp = session.post(f"{BASE_URL}/register", data={
-        "name": "Test", "email": "", "password": "pass123456"
+        "name": "Test", "email": "", "password": "pass123456", "confirm_password": "pass123456"
     })
     assert "Email is required" in resp.text, "Missing email validation"
     print("[OK] Empty email validation works")
 
     # Test 2c: Password too short
     resp = session.post(f"{BASE_URL}/register", data={
-        "name": "Test", "email": "test@example.com", "password": "short"
+        "name": "Test", "email": "test@example.com", "password": "short", "confirm_password": "short"
     })
     assert "Password must be at least 8 characters" in resp.text, "Password length validation"
     print("[OK] Password minimum 8 characters validation works")
 
-    # Test 2d: Whitespace-only input
+    # Test 2d: Passwords do not match
     resp = session.post(f"{BASE_URL}/register", data={
-        "name": "   ", "email": "test@example.com", "password": "password123"
+        "name": "Test", "email": "test2@example.com", "password": "password123", "confirm_password": "different123"
+    })
+    assert "Passwords do not match" in resp.text, "Password mismatch validation"
+    print("[OK] Password mismatch validation works")
+
+    # Test 2e: Whitespace-only input
+    resp = session.post(f"{BASE_URL}/register", data={
+        "name": "   ", "email": "test@example.com", "password": "password123", "confirm_password": "password123"
     })
     assert "Name is required" in resp.text, "Whitespace trimming not working"
     print("[OK] Whitespace trimming works")
@@ -132,10 +140,11 @@ def test_3_duplicate_email():
     data = {
         "name": "Duplicate Test",
         "email": "duplicate@example.com",
-        "password": "password123"
+        "password": "password123",
+        "confirm_password": "password123"
     }
     resp1 = session.post(f"{BASE_URL}/register", data=data, allow_redirects=False)
-    assert resp1.status_code == 302, "First registration should succeed"
+    assert resp1.status_code == 302, f"First registration should succeed, got {resp1.status_code}"
     print("[OK] First registration successful")
 
     # Try to register with same email
@@ -176,7 +185,8 @@ def test_4_navbar_registration_link():
     data = {
         "name": "Navbar Test",
         "email": "navbartest@example.com",
-        "password": "password123"
+        "password": "password123",
+        "confirm_password": "password123"
     }
     session.post(f"{BASE_URL}/register", data=data, allow_redirects=True)
 
