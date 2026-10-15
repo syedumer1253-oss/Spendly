@@ -65,6 +65,7 @@ def register():
         name = request.form.get("name", "").strip()
         email = request.form.get("email", "").strip()
         password = request.form.get("password", "").strip()
+        confirm_password = request.form.get("confirm_password", "").strip()
 
         error = None
 
@@ -72,8 +73,12 @@ def register():
             error = "Name is required."
         elif not email:
             error = "Email is required."
-        elif not password or len(password) < 8:
+        elif not password:
+            error = "Password is required."
+        elif len(password) < 8:
             error = "Password must be at least 8 characters."
+        elif password != confirm_password:
+            error = "Passwords do not match."
 
         if not error:
             db = get_db()
