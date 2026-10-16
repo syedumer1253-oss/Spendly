@@ -65,6 +65,7 @@ def register():
         name = request.form.get("name", "").strip()
         email = request.form.get("email", "").strip()
         password = request.form.get("password", "").strip()
+        confirm_password = request.form.get("confirm_password", "").strip()
 
         error = None
 
@@ -72,8 +73,12 @@ def register():
             error = "Name is required."
         elif not email:
             error = "Email is required."
-        elif not password or len(password) < 8:
+        elif not password:
+            error = "Password is required."
+        elif len(password) < 8:
             error = "Password must be at least 8 characters."
+        elif password != confirm_password:
+            error = "Passwords do not match."
 
         if not error:
             db = get_db()
@@ -177,7 +182,7 @@ def profile():
 
 
 # ------------------------------------------------------------------ #
-# Placeholder routes — students will implement these                  #
+# Placeholder routes - students will implement these                  #
 # ------------------------------------------------------------------ #
 
 @app.route("/expenses/add", methods=["GET", "POST"])
@@ -236,7 +241,7 @@ def add_expense():
             "description": description
         })
 
-    return render_template("add_expense.html", categories=categories)
+    return render_template("add_expense.html", categories=categories, form_data={})
 
 
 @app.route("/expenses/<int:id>/edit", methods=["GET", "POST"])
@@ -245,7 +250,7 @@ def edit_expense(id):
     db = get_db()
     cursor = db.cursor()
 
-    # Get the expense — verify it belongs to the current user
+    # Get the expense - verify it belongs to the current user
     cursor.execute("""
         SELECT e.*, c.name as category_name
         FROM expenses e
@@ -309,7 +314,7 @@ def edit_expense(id):
             "description": description
         })
 
-    return render_template("edit_expense.html", expense=expense, categories=categories)
+    return render_template("edit_expense.html", expense=expense, categories=categories, form_data={})
 
 
 @app.route("/expenses/<int:id>/delete", methods=["POST"])
