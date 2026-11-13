@@ -28,6 +28,16 @@ def login_required(f):
     return decorated_function
 
 
+def guest_only(f):
+    """Decorator to keep logged-in users out of auth pages."""
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if "user_id" in session:
+            return redirect(url_for("profile"))
+        return f(*args, **kwargs)
+    return decorated_function
+
+
 def get_current_user():
     """Get the current logged-in user's data."""
     if "user_id" not in session:
@@ -60,6 +70,7 @@ def privacy():
 
 
 @app.route("/register", methods=["GET", "POST"])
+@guest_only
 def register():
     if request.method == "POST":
         name = request.form.get("name", "").strip()
@@ -105,6 +116,7 @@ def register():
 
 
 @app.route("/login", methods=["GET", "POST"])
+@guest_only
 def login():
     if request.method == "POST":
         email = request.form.get("email", "").strip()
