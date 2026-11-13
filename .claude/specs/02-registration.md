@@ -4,9 +4,9 @@
 
   Implement user registration with validation, password hashing, and automatic login.
 
-  Users create an account by providing name, email, and password. The system validates inputs, hashes the password with werkzeug, creates a user record, and logs the user in automatically on success the user shows a success message and then redirected to the login pages.
+  Users create an account by providing name, email, and password. The system validates inputs, hashes the password with werkzeug, creates a user record, and logs the user in automatically on success.
   Registration is the entry point for new users into Spendly.
-
+now 
   ---
 
   ## Depends on
